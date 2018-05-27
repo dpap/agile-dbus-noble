@@ -1,0 +1,19 @@
+{
+  "name": "agile-ble-node",
+  "version": "0.0.1",
+  "description": "AGILE Bluetooth support using nodejs",
+  "main": "app.js",
+  "dependencies": {
+    "dbus-native": "^0.2.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "AGAIL",
+    "BLE"
+  ],
+  "author": "dp",
+  "license": "ISC"
+}
