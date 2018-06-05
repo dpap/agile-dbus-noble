@@ -6,7 +6,9 @@
   "dependencies": {
     "dbus-native": "^0.2.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

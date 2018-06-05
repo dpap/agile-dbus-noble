@@ -9,7 +9,7 @@ const dbus = require('dbus-native');
 	- make a method call: `gdbus introspect -e -d com.dbus.native.return.types -o /com/dbus/native/return/types -m com.dbus.native.return.types.FunctionName`
 */
 
-const serviceName = 'org.eclipse.agail.BLE'; // our DBus service name
+const serviceName = 'org.eclipse.agail.protocol.BLE'; // our DBus service name
 /*
 	The interface under which we will expose our functions (chose to be the same as the service name, but we can
 	choose whatever name we want, provided it respects the rules, see DBus naming documentation)
@@ -62,25 +62,41 @@ sessionBus.requestName(serviceName, 0x4, (err, retCode) => {
 
 // Function called when we have successfully got the service name we wanted
 function proceed() {
+  var methods = {
+    // Simple types
+    //  SayHello: ['', 's', [], ['hello_sentence']],
+    //  GiveTime: ['', 's', [], ['current_time']],
+    //  Capitalize: ['s', 's', ['initial_string'], ['capitalized_string']],
+        Connect: ['s', '', ['arg_0'] , []],
+        Data: ['', 'ay', [] , ['arg_0'], []],
+        DeviceStatus : [ 's' , '(s)', ['arg_0'] , ['arg_1']],
+        Devices : [ '' , 'a(ssss)', [] , ['arg_0']],
+        Disconnect : [ 's' , '' , ['arg_0'] , []],
+        DiscoveryStatus : [ '' , 's' , [] , ['arg_0']],
+        Driver : [ '' , 's' , [] , ['arg_0']],
+        Name : [ '' , 's' , [] , ['arg_0']],
+        NotificationRead : ['sa{ss}' , 'ay' , ['arg_0','arg_1'] , ['arg_2']],
+        Read : ['sa{ss}' , 'ay' , ['arg_0','arg_1'] , ['arg_2']],
+        StartDiscovery : ['' , '' , [] , []],
+        Status : [ '' , 's' , [] , ['arg_0'], []],
+        StopDiscovery : [ '' , '' , [] , []],
+        Subscribe : [ 'sa{ss}' , '' , ['arg_0','arg_1'] , []],
+        Unsubscribe : [ 'sa{ss}' , '' , ['arg_0','arg_1'] , []],
+        Write :  [ 'sa{ss}ay', '' , ['arg_0','arg_1','arg_2'] , []]
+  
+    } 
+
   // First, we need to create our interface description (here we will only expose method calls)
-  var ifaceDesc = {
+   var ifaceDesc = {
     name: interfaceName,
-    methods: {
-      // Simple types
-      SayHello: ['', 's', [], ['hello_sentence']],
-      GiveTime: ['', 's', [], ['current_time']],
-      Capitalize: ['s', 's', ['initial_string'], ['capitalized_string']]
-    },
-    properties: {
-      Flag: 'b',
-      StringProp: 's'
-    },
+    methods: methods,
     signals: {
-      Rand: ['i', 'random_number']
+      NewRecordSignal: ['aysa{ss}', 'NewRecordSignal']
     }
   };
 
   // Then we need to create the interface implementation (with actual functions)
+/*
   var iface = {
     SayHello: function() {
       return 'Hello, world!';
@@ -91,10 +107,90 @@ function proceed() {
     Capitalize: function(str) {
       return str.toUpperCase();
     },
-    Flag: true,
-    StringProp: 'initial string',
+*/
+  var iface = {
+    Connect: function(deviceId) {
+        console.log("deviceId " + deviceId);
+        return null;
+    },
+    Data: function () {
+        var array = [];
+        //array.push(35);
+        return array;
+    },
+    DeviceStatus : function (deviceAddress) {
+        var status =  "DISCONNECTED";
+        console.log(status);
+        //Struct of (String)
+        return [status];
+    },
+    Devices : function () {
+       let device = ['D0:37:02:2C:27:42','org.eclipse.agail.protocol.BLE','X10Pro','AVAILABLE'];
+
+       console.log("get devices"); 
+//       let devId = "ble1341413";
+//       let devProt = "BLE";
+//       let devName = "X1232";
+//       let devStatus = "Con" ;
+        //Array of [Struct of (String,String,String,String)]
+       return [device] 
+    },
+    Disconnect : function (deviceAddress) {
+        console.log ("Disconnect " + deviceAddress);
+        return null;
+    },
+    DiscoveryStatus : function () {
+        let discoveryStatus = "NONE";
+        //'RUNNING'    
+        return "NONE"
+    },
+    Driver : function () {
+        console.log('Driver: BLE')
+        return "BLE"
+    },
+    Name : function () {
+        console.log('Name : Bluetooth Low Energy');
+        return "Bluetooth Low Energy"
+    },
+    NotificationRead : function (device, profile) {
+        let arr = []        
+        return arr;
+    },
+    Read : function () {
+        let arr = []
+        return arr;
+    },
+    StartDiscovery :function () {
+        console.log('Starting discovery');
+        return null;
+    },
+    Status : function () {
+        let status = "PROTOCOL STATUS NOT IMPLEMENTED"
+        return status
+    },
+    StopDiscovery : function () {
+        console.log('Stop discovery'); 
+        return null;      
+    },
+    Subscribe : function (deviceAddess, profile) {
+        console.log(deviceAddress);
+        console.log(profile);
+        return null;
+    },
+    Unsubscribe : function (deviceAddess, profile) {
+        console.log(deviceAddress);
+        console.log(profile);
+        return null;
+    },
+    Write : function (deviceAddress, profile, payload) {
+        console.log(deviceAddress);
+        console.log(profile);
+        console.log(payload);
+        return null;
+    },
     emit: function() {
       // no nothing, as usual
+        return null;
     }
   };
 
@@ -104,10 +200,15 @@ function proceed() {
   // Say our service is ready to receive function calls (you can use `gdbus call` to make function calls)
   console.log('Interface exposed to DBus, ready to receive function calls!');
 
-  setInterval(() => {
-    var rand = Math.round(Math.random() * 100);
-    if (rand > 75) {
-      iface.emit('Rand', Math.round(Math.random() * 100));
-    }
+ /* setInterval(() => {
+      let data = [];
+      data.push(0x31);
+      data.push(0x32);
+      let address = "D0:34"  
+      let profile = [ 'test1' , 'test2'];
+      console.log('pushing data') ;     
+        
+      iface.emit('NewRecordSignal', data , address, [profile] );
   }, 2000);
+*/
 }

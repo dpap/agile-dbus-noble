@@ -79,7 +79,7 @@ if [ $MODULE = 'all' ] || [ $MODULE = 'BLE' ]; then
   done
 
   #java -cp deps/tinyb.jar:org.eclipse.agail.protocol.BLE/target/ble-1.0-jar-with-dependencies.jar -Djava.library.path=deps:deps/lib org.eclipse.agail.protocol.ble.BLEProtocolImp &
-  node example.js
+  node bleProtocol.js
   echo "Started AGILE BLE protocol"
 fi
 
