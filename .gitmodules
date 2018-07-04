@@ -1,0 +1,3 @@
+[submodule "dbus-native"]
+	path = dbus-native
+	url = https://github.com/sidorares/dbus-native.git

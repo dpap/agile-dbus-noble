@@ -1,4 +1,4 @@
-const dbus = require('dbus-native');
+const dbus = require('../dbus-native/index');
 
 /*
 	This test file's purpose is to show how to write a simple, basic DBus service with this library.
@@ -200,15 +200,15 @@ function proceed() {
   // Say our service is ready to receive function calls (you can use `gdbus call` to make function calls)
   console.log('Interface exposed to DBus, ready to receive function calls!');
 
- /* setInterval(() => {
+  setInterval(() => {
       let data = [];
       data.push(0x31);
       data.push(0x32);
-      let address = "D0:34"  
+      let address = "D0:11:22:33:44:55"  
       let profile = [ 'test1' , 'test2'];
-      console.log('pushing data') ;     
+      console.log('Sending NewRecordSignal') ;     
         
       iface.emit('NewRecordSignal', data , address, [profile] );
-  }, 2000);
-*/
+  }, 30000);
+
 }

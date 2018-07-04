@@ -56,6 +56,6 @@ service.getInterface(objectPath, interfaceName, (err, iface) => {
   });
 
   iface.on('NewRecordSignal', (data, profile) => {
-    console.log(`Received Rand: ${data} ${profile}`);
+    console.log(`Received NewRecordSignal: ${data} ${profile}`);
   });
 });
