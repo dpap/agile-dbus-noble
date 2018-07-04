@@ -1,4 +1,4 @@
-const dbus = require('../dbus-native/index');
+const dbus = require('dbus-native');
 
 /*
 	This test file's purpose is to show how to write a simple, basic DBus service with this library.
