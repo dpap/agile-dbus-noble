@@ -55,7 +55,7 @@ sessionBus.requestName(serviceName, 0x4, (err, retCode) => {
     throw new Error(
       `Failed to request service name "${
         serviceName
-      }". Check what return code "${retCode}" means.`
+      }". Error connecting to dbus: error code: "${retCode}" `
     );
   }
 });
@@ -96,18 +96,7 @@ function proceed() {
   };
 
   // Then we need to create the interface implementation (with actual functions)
-/*
-  var iface = {
-    SayHello: function() {
-      return 'Hello, world!';
-    },
-    GiveTime: function() {
-      return new Date().toString();
-    },
-    Capitalize: function(str) {
-      return str.toUpperCase();
-    },
-*/
+
   var iface = {
     Connect: function(deviceId) {
         console.log("deviceId " + deviceId);

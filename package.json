@@ -2,7 +2,7 @@
   "name": "agile-ble-node",
   "version": "0.0.1",
   "description": "AGILE Bluetooth support using nodejs",
-  "main": "app.js",
+  "main": "src/bleProtocol.js",
   "dependencies": {
     "dbus-native": "file:dbus-native"
   },
@@ -10,8 +10,8 @@
     "nodemon": "^1.17.5"
   },
   "scripts": {
-    "start" : "node src/bleProtocol.js" ,
-    "testClient" : "node test/client",
+    "start": "node src/bleProtocol.js",
+    "testClient": "node test/client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
