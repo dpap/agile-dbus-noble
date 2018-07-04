@@ -13,9 +13,8 @@
 #-------------------------------------------------------------------------------
 
 ARG="${1:-ble}"
-PATTERN="org.eclipse.agail.$ARG"
-PATTERN2="org.eclipse.agail.protocol.$ARG"
+PATTERN="bleProtocol"
 
 echo "Send kill signal to $PATTERN"
 pkill -f $PATTERN
-pkill -f $PATTERN2
+
