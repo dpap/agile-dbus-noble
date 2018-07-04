@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+
+#  agile-dbus:
+#    container_name: agile-dbus
+#    image: agileiot/agile-dbus-x86_64:v0.1.4
+#    # build: apps/agile-dbus
+#    restart: always
+#    volumes:
+#      - agile-dbus-dir:/usr/src/app/.agile_bus
+
+  agile-ble-node:
+    container_name: agile-ble-node
+    #image: agileiot/agile-ble-agile-dbus-x86_64:v0.1.11
+    build: .
+#    depends_on:
+#      - agile-dbus
+    volumes:
+      - /home/user/.agile/agile_bus/:/usr/src/app/.agile_bus
+    environment:
+      - DBUS_SESSION_BUS_ADDRESS=unix:path=/usr/src/app/.agile_bus/agile_bus_socket
+    restart: always
+    privileged: true
+    network_mode: "host"
+    command: bash -c "mkdir -p /var/run/dbus && rm -f /var/run/dbus/pid && dbus-daemon --system && hciconfig hci0 down && hciconfig hci0 up && /usr/local/libexec/bluetooth/bluetoothd -E & npm start"
+
+

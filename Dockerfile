@@ -11,8 +11,12 @@
 #     Bioassist / Create-Net - initial API and implementation
 #-------------------------------------------------------------------------------
 
-ARG BASEIMAGE_BUILD=agileiot/raspberry-pi3-zulujdk:8-jdk-maven
-ARG BASEIMAGE_DEPLOY=agileiot/raspberry-pi3-zulujdk:8-jre
+ARG BASEIMAGE_BUILD=node:8-slim
+#ARG BASEIMAGE_BUILD=resin/raspberrypi3-node:slim
+
+#ARG BASEIMAGE_DEPLOY=resin/raspberrypi3-node:slim
+
+
 
 FROM $BASEIMAGE_BUILD
 
@@ -26,7 +30,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     unzip \
     cpp \
     binutils \
-    maven \
     gettext \
     libc6-dev \
     make \
@@ -72,12 +75,16 @@ RUN echo "deb http://deb.debian.org/debian unstable main" >>/etc/apt/sources.lis
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+RUN npm install -g node-gyp
+
 # Install app dependencies
 COPY package.json /usr/src/app/
-RUN npm install --production
+RUN npm install
 
+COPY . /usr/src/app
 
 # workaround for external startup command. To be removed.
 RUN mkdir -p /usr/local/libexec/bluetooth/ && ln -s /usr/sbin/bluetoothd /usr/local/libexec/bluetooth/bluetoothd
 
-CMD [ "bash", "node js/bleProtocol.js" ]
+#CMD [ "npm", "start" ]
+CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
