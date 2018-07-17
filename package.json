@@ -4,7 +4,8 @@
   "description": "AGILE Bluetooth support using nodejs",
   "main": "src/bleProtocol.js",
   "dependencies": {
-    "dbus-native": "^0.2.5"
+    "dbus-native": "^0.2.5",
+    "noble": "^1.9.1"
   },
   "devDependencies": {
     "nodemon": "^1.17.5"
